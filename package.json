@@ -1,19 +1,22 @@
 {
   "name": "proyecto-fina-bdii",
-  "module": "/src/api.ts",
+  "module": "./src/api.ts",
   "type": "module",
   "private": true,
   "scripts": {
-    "dev": "bun run /src/api.ts",
-    "start": "bun run /src/api.ts"
+    "dev": "bun run ./src/api.ts",
+    "start": "bun run ./src/api.ts"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@types/mssql": "^12.3.0"
   },
   "peerDependencies": {
     "typescript": "^5"
   },
   "dependencies": {
-    "elysia": "^1.4.28"
+    "dotenv": "^17.4.2",
+    "elysia": "^1.4.28",
+    "mssql": "^12.5.0"
   }
 }

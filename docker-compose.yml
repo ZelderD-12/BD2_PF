@@ -1,47 +1,19 @@
 services:
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: clinica_sqlserver
-    environment:
-      ACCEPT_EULA: "Y"
-      SA_PASSWORD: ${SA_PASSWORD:-Cilincagrupo3#}
-      MSSQL_PID: "Express"
-    ports:
-      - "${SQLSERVER_PORT:-1436}:1433"  # Usa variable de entorno
-    volumes:
-      - sqlserver_data:/var/opt/mssql
-      - ./sql/init:/docker-entrypoint-initdb.d  # Scripts automáticos
-    networks:
-      - clinica_network
-    restart: unless-stopped
-
   bun_app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: clinica_bun_app
-    depends_on:
-      - sqlserver
     environment:
-      DB_HOST: "sqlserver"
-      DB_USER: "sa"
-      DB_PASSWORD: ${SA_PASSWORD:-Cilincagrupo3#}
-      DB_NAME: ${DB_NAME:-ClinicaDB}
+      DB_HOST: "clinica.cq3gc4ceq61b.us-east-1.rds.amazonaws.com"
+      DB_USER: "admin"
+      DB_PASSWORD: "SQL.awsKamKon1"
+      DB_NAME: "ClinicaF"
       DB_PORT: "1433"
-      APP_PORT: ${APP_PORT:-3000}
+      APP_PORT: 8080
     ports:
-      - "${APP_PORT:-3000}:3000"
+      - "8080:8080"
     volumes:
       - .:/app
       - /app/node_modules
-    networks:
-      - clinica_network
-    command: sh -c "sleep 30 && bun run dev"
     restart: unless-stopped
-
-volumes:
-  sqlserver_data:
-
-networks:
-  clinica_network:
-    driver: bridge

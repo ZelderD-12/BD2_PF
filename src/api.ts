@@ -1,30 +1,21 @@
-import { Elysia, t } from 'elysia'
+// Cargar variables de entorno
+import dotenv from 'dotenv';
+dotenv.config();
 
-const app = new Elysia()
-const PORT = 8080
-app.listen(PORT)
-console.log(` API corriendo en http://localhost:${PORT}`)
+import { Elysia } from 'elysia';
+import { getConnection, sql } from './Connetion';
 
+const app = new Elysia();
 
-app.get("/", () => {
-    return { mensaje: "API de Saludos" }
-})
+const port = parseInt(process.env.APP_PORT || '8080');
+app.listen(port);
 
+console.log(` API corriendo en http://localhost:${port}`);
 
-app.post("/saludar", ({ body }) => {
-    const { nombre, saludo = "Hola" } = body
-    return { 
-        mensaje: `${saludo} ${nombre} desde POST!`,
-        metodo: "POST",
-        recibido: body
-    }
-}, {
-    body: t.Object({
-        nombre: t.String(),
-        saludo: t.Optional(t.String())
-    })
-})
-
+// Endpoint raíz
+app.get('/', () => ({
+    message: ' API de Clínica funcionando',
+}));
 
 
 

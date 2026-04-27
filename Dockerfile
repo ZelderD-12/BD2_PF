@@ -2,18 +2,17 @@ FROM oven/bun:1.1-alpine
 
 WORKDIR /app
 
-# Copiar archivos de dependencias
-COPY package.json bun.lock* ./
+# Copiar SOLO los archivos de dependencias primero
+COPY package.json ./
 
-# Instalar dependencias (mssql, react, etc.)
-RUN bun install
+# Instalar dependencias (sin lockfile problemático)
+RUN bun install --no-cache
 
-# Copiar código fuente
+# Copiar el resto del código
 COPY . .
 
 # Exponer puertos
-EXPOSE 3000
 EXPOSE 8080
 
-# Usar el script dev del package.json
+# Usar el script dev
 CMD ["bun", "run", "dev"]
