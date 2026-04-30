@@ -1,3 +1,4 @@
 bun add elysia 
 bun add mssql
 bun add dotenv 
+bun add -d nodemon

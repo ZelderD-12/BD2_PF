@@ -1,9 +1,12 @@
+version: '3.8'
+
 services:
-  bun_app:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: clinica_bun_app
+  api:
+    image: oven/bun:1.1-alpine
+    container_name: clinica_api
+    working_dir: /app
+    ports:
+      - "8080:8080"
     environment:
       DB_HOST: "clinica.cq3gc4ceq61b.us-east-1.rds.amazonaws.com"
       DB_USER: "admin"
@@ -11,9 +14,16 @@ services:
       DB_NAME: "ClinicaF"
       DB_PORT: "1433"
       APP_PORT: 8080
-    ports:
-      - "8080:8080"
     volumes:
-      - .:/app
-      - /app/node_modules
+      - ./:/app
+    command: ["bun", "src/api.ts"]
+    restart: unless-stopped
+
+  frontend:
+    image: nginx:alpine
+    container_name: clinica_frontend
+    ports:
+      - "80:80"
+    volumes:
+      - ./Fronted:/usr/share/nginx/html:ro  # :ro = solo lectura
     restart: unless-stopped

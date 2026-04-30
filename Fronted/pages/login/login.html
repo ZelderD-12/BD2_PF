@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Iniciar Sesion</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-heartbeat"></i>
+                    <h1>FamKon Clinic</h1>
+                </div>
+                <p>Inicia sesion para agendar tus citas</p>
+            </div>
+            
+            <form id="loginForm">
+                <div class="form-group">
+                    <label><i class="fas fa-envelope"></i> Correo electronico</label>
+                    <input type="email" id="loginEmail" placeholder="ejemplo@correo.com" required>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-lock"></i> Contraseña</label>
+                    <input type="password" id="loginPassword" placeholder="••••••" required>
+                </div>
+                
+                <div class="forgot-password">
+                    <a href="recuperar-contrasena.html"><i class="fas fa-key"></i> Olvidaste tu contraseña</a>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="loginBtn">
+                    <i class="fas fa-sign-in-alt"></i> Iniciar Sesion
+                </button>
+            </form>
+            
+            <div id="loginMessage" class="form-message"></div>
+            
+            <div class="login-footer">
+                <a href="../../FamKon_Clinic.html"><i class="fas fa-arrow-left"></i> Volver al inicio</a>
+            </div>
+            
+            <div class="register-link">
+                <p>No tienes una cuenta</p>
+                <a href="../CrearNuevoUsuario/CrearNuevoUsuario.html">
+                    <i class="fas fa-user-plus"></i> Crear nueva cuenta
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = 'http://localhost:8080';
+        const loginForm = document.getElementById('loginForm');
+        const loginEmail = document.getElementById('loginEmail');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginMessage = document.getElementById('loginMessage');
+
+        function showMessage(message, type) {
+            if (!loginMessage) return;
+            loginMessage.textContent = message;
+            loginMessage.className = 'form-message ' + type;
+            loginMessage.style.display = 'block';
+            setTimeout(function() {
+                if (loginMessage) loginMessage.style.display = 'none';
+            }, 5000);
+        }
+
+        async function iniciarSesion(email, password) {
+            var originalText = loginBtn.innerHTML;
+            loginBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando...';
+            loginBtn.disabled = true;
+            
+            try {
+                var response = await fetch(API_URL + '/Login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email: email, password: password })
+                });
+                
+                var result = await response.json();
+                
+                if (result.success === true && result.token) {
+                    localStorage.setItem('auth_token', result.token);
+                    localStorage.setItem('user_nombre', (result.usuario && result.usuario.nombres) || email.split('@')[0]);
+                    localStorage.setItem('user_rol', (result.usuario && result.usuario.rol_nombre) || 'PACIENTE');
+                    localStorage.setItem('user_email', email);
+                    localStorage.setItem('user_id', (result.usuario && result.usuario.id) || '');
+                    
+                    showMessage('Sesion iniciada correctamente. Redirigiendo...', 'success');
+                    
+                    setTimeout(function() {
+                        window.location.href = '../../FamKon_Clinic.html';
+                    }, 1500);
+                    
+                    return true;
+                }
+                
+                var mensajeError = result.message || 'Error al iniciar sesion';
+                
+                if (result.code === 'USUARIO_NO_ENCONTRADO') {
+                    mensajeError = 'No existe una cuenta con este correo. ¿Deseas registrarte?';
+                } else if (result.code === 'CONTRASENA_INCORRECTA') {
+                    mensajeError = 'Contraseña incorrecta. Por favor verifica tu contraseña.';
+                } else if (result.code === 'CUENTA_BLOQUEADA') {
+                    mensajeError = result.message || 'Cuenta bloqueada por muchos intentos fallidos.';
+                } else if (result.code === 'DEMASIADOS_INTENTOS') {
+                    mensajeError = result.message || 'Demasiados intentos fallidos.';
+                }
+                
+                showMessage(mensajeError, 'error');
+                return false;
+                
+            } catch (error) {
+                console.error('Error en login:', error);
+                showMessage('Error de conexion con el servidor', 'error');
+                return false;
+            } finally {
+                loginBtn.innerHTML = originalText;
+                loginBtn.disabled = false;
+            }
+        }
+
+        if (loginForm) {
+            loginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                var email = loginEmail.value.trim();
+                var password = loginPassword.value;
+                
+                if (!email) {
+                    showMessage('Ingresa tu correo electronico', 'error');
+                    loginEmail.focus();
+                    return;
+                }
+                
+                if (!password) {
+                    showMessage('Ingresa tu contraseña', 'error');
+                    loginPassword.focus();
+                    return;
+                }
+                
+                var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(email)) {
+                    showMessage('Ingresa un correo electronico valido', 'error');
+                    loginEmail.focus();
+                    return;
+                }
+                
+                await iniciarSesion(email, password);
+            });
+        }
+
+        if (loginPassword) {
+            loginPassword.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && loginForm) {
+                    e.preventDefault();
+                    loginForm.dispatchEvent(new Event('submit'));
+                }
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            var token = localStorage.getItem('auth_token');
+            if (token) {
+                showMessage('Ya tienes una sesion activa. Redirigiendo...', 'success');
+                setTimeout(function() {
+                    window.location.href = '../../FamKon_Clinic.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>

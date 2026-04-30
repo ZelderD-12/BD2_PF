@@ -1,0 +1,77 @@
+<div class="header-simple">
+    <div class="header-simple-container">
+        <div class="header-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>FamKon Clinic</span>
+        </div>
+        <div class="header-user-area" id="headerUserArea">
+            <a href="./pages/login/login.html" id="btnLoginHeader" class="btn-login-header">
+                <i class="fas fa-sign-in-alt"></i> Iniciar Sesión
+            </a>
+            <div id="userInfoHeader" style="display: none; align-items: center; gap: 15px;">
+                <span id="userNameHeader" style="color: var(--celeste-oscuro); font-weight: 500;"></span>
+                <button onclick="cerrarSesionGlobal()" class="btn-logout-header">Cerrar Sesión</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.header-simple {
+    background: white;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+}
+.header-simple-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--celeste-oscuro);
+}
+.header-logo i {
+    color: var(--verde);
+    font-size: 1.5rem;
+}
+.btn-login-header {
+    background: var(--verde);
+    color: white;
+    padding: 8px 20px;
+    border-radius: 25px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+.btn-login-header:hover {
+    background: var(--verde-oscuro);
+    transform: translateY(-2px);
+}
+.btn-logout-header {
+    background: #ff4757;
+    color: white;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s;
+}
+.btn-logout-header:hover {
+    background: #e04e5e;
+    transform: translateY(-2px);
+}
+</style>

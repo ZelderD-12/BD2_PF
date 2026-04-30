@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Mis Citas</title>
+    <link rel="stylesheet" href="citas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="citas-page">
+        <div class="citas-container">
+            <div class="citas-header">
+                <a href="../../FamKon_Clinic.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                </a>
+                <h1><i class="fas fa-calendar-check"></i> Mis Citas</h1>
+                <p>Gestiona tus citas medicas</p>
+            </div>
+
+            <div class="citas-actions">
+                <button id="btnNuevaCita" class="btn-nueva-cita">
+                    <i class="fas fa-plus-circle"></i> Agendar Nueva Cita
+                </button>
+            </div>
+
+            <div id="modalCita" class="modal-cita">
+                <div class="modal-cita-content">
+                    <div class="modal-cita-header">
+                        <h2><i class="fas fa-calendar-plus"></i> Agendar Cita</h2>
+                        <span class="close-modal">&times;</span>
+                    </div>
+                    <div class="modal-cita-body">
+                        <form id="formNuevaCita">
+                            <div class="form-group-cita">
+                                <label><i class="fas fa-building"></i> Sede</label>
+                                <select id="sede" required>
+                                    <option value="">Selecciona una sede</option>
+                                    <option value="1">Sede Zona 19</option>
+                                    <option value="2">Sede Zona 10</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-cita">
+                                <label><i class="fas fa-stethoscope"></i> Especialidad</label>
+                                <select id="especialidad" required>
+                                    <option value="">Selecciona especialidad</option>
+                                    <option value="1">Consulta General</option>
+                                    <option value="2">Odontologia</option>
+                                    <option value="3">Cardiologia</option>
+                                    <option value="4">Neurologia</option>
+                                    <option value="5">Pediatria</option>
+                                    <option value="6">Laboratorio Clinico</option>
+                                    <option value="7">Radiologia</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group-cita">
+                                <label><i class="fas fa-user-md"></i> Medico</label>
+                                <select id="medico" required>
+                                    <option value="">Primero selecciona especialidad</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-row-cita">
+                                <div class="form-group-cita">
+                                    <label><i class="fas fa-calendar-day"></i> Fecha</label>
+                                    <input type="date" id="fecha" required>
+                                </div>
+                                
+                                <div class="form-group-cita">
+                                    <label><i class="fas fa-clock"></i> Hora</label>
+                                    <select id="hora" required>
+                                        <option value="">Selecciona hora</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <button type="submit" class="btn-guardar-cita">
+                                <i class="fas fa-save"></i> Reservar Cita
+                            </button>
+                        </form>
+                        <div id="mensajeCita" class="mensaje-cita"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="citasList" class="citas-grid">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando tus citas...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="citas.js"></script>
+</body>
+</html>

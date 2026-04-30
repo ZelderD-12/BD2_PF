@@ -1,0 +1,34 @@
+<nav class="navbar-simple">
+    <div class="nav-simple-container">
+        <ul class="nav-simple-menu">
+            <li><a href="#inicio" class="nav-simple-link" data-section="inicio">Inicio</a></li>
+            <li><a href="#servicios" class="nav-simple-link" data-section="servicios">Servicios</a></li>
+            <li><a href="#contacto" class="nav-simple-link" data-section="contacto">Contacto</a></li>
+            <li><a href="#" class="nav-simple-link" id="navCitasSimple">Mis Citas</a></li>
+            <li id="navPagarSimple" style="display:none;"><a href="#" class="nav-simple-link" id="navPagarSimpleLink">Pagar</a></li>
+        </ul>
+    </div>
+</nav>
+
+<script>
+    document.querySelectorAll('.nav-simple-link[data-section]').forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            var sectionId = link.getAttribute('data-section');
+            if (sectionId) {
+                document.querySelectorAll('section').forEach(function(section) {
+                    section.style.display = 'none';
+                });
+                var targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+                document.querySelectorAll('.nav-simple-link').forEach(function(l) {
+                    l.classList.remove('active');
+                });
+                link.classList.add('active');
+            }
+        });
+    });
+</script>

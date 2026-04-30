@@ -33,16 +33,8 @@ export async function getConnection(): Promise<ConnectionPool> {
         if (pool && pool.connected) {
             console.log(' Usando conexión existente');
             return pool;
-        }
-        
-        console.log('📡 Conectando a SQL Server...');
-        console.log(`   Servidor: ${dbConfig.server}`);
-        console.log(`   Base de datos: ${dbConfig.database}`);
-        console.log(`   Usuario: ${dbConfig.user}`);
-        
-        pool = await sql.connect(dbConfig);
-        console.log(' Conexión exitosa a SQL Server');
-        
+        }   
+        pool = await sql.connect(dbConfig); 
         return pool;
     } catch (error) {
         console.error(' Error de conexión:', error);

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Crear Nueva Cuenta</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .register-form {
+            max-height: 550px;
+            overflow-y: auto;
+            padding-right: 10px;
+        }
+        
+        .register-form::-webkit-scrollbar {
+            width: 5px;
+        }
+        
+        .register-form::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 5px;
+        }
+        
+        .register-form::-webkit-scrollbar-thumb {
+            background: #007bff;
+            border-radius: 5px;
+        }
+        
+        .form-row {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .form-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+        
+        .password-requirements {
+            font-size: 11px;
+            color: #666;
+            margin-top: 5px;
+        }
+        
+        .password-requirements ul {
+            margin: 5px 0 0 20px;
+            padding: 0;
+        }
+        
+        .password-requirements li {
+            margin: 2px 0;
+        }
+        
+        .password-requirements li.valid {
+            color: #28a745;
+            text-decoration: line-through;
+        }
+        
+        .btn-secondary {
+            background: #6c757d;
+        }
+        
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+    </style>
+</head>
+<body class="login-page">
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="login-logo">
+                    <i class="fas fa-user-plus"></i>
+                    <h1>Crear Cuenta</h1>
+                </div>
+                <p>Regístrate para agendar tus citas médicas</p>
+            </div>
+            
+            <form id="registerForm" class="register-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nombres *</label>
+                        <input type="text" id="regNombres" placeholder="Juan Carlos" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Apellidos *</label>
+                        <input type="text" id="regApellidos" placeholder="Pérez Gómez" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-id-card"></i> DPI *</label>
+                        <input type="text" id="regDpi" maxlength="13" placeholder="1234567890123" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Teléfono *</label>
+                        <input type="text" id="regTelefono" maxlength="8" placeholder="55551234" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Correo electrónico *</label>
+                        <input type="email" id="regEmail" placeholder="ejemplo@correo.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-calendar"></i> Fecha de Nacimiento *</label>
+                        <input type="date" id="regFechaNacimiento" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-venus-mars"></i> Sexo *</label>
+                        <select id="regSexo" required>
+                            <option value="">Seleccionar</option>
+                            <option value="M">Masculino</option>
+                            <option value="F">Femenino</option>
+                            <option value="O">Otro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-user-tag"></i> Tipo de Usuario *</label>
+                        <select id="regRol" required>
+                            <option value="1">Anónimo</option>
+                            <option value="2" selected>Paciente</option>
+                            <option value="3">Doctor/a</option>
+                            <option value="4">Trabajador/a</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-map-marker-alt"></i> Dirección</label>
+                    <input type="text" id="regDireccion" placeholder="Ciudad, Zona, Calle...">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-phone-alt"></i> Contacto de Emergencia</label>
+                    <input type="text" id="regContactoEmergencia" maxlength="8" placeholder="Teléfono de emergencia (opcional)">
+                </div>
+                
+                <div class="form-group">
+                    <label><i class="fas fa-notes-medical"></i> Antecedentes Médicos</label>
+                    <textarea id="regAntecedentes" rows="2" placeholder="Alergias, enfermedades crónicas, cirugías previas..."></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Contraseña *</label>
+                        <input type="password" id="regPassword" placeholder="Mínimo 6 caracteres" required>
+                        <div class="password-requirements">
+                            <small>La contraseña debe tener al menos 6 caracteres</small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label><i class="fas fa-lock"></i> Confirmar Contraseña *</label>
+                        <input type="password" id="regConfirmPassword" placeholder="Repite tu contraseña" required>
+                    </div>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-block" id="registerBtn">
+                    <i class="fas fa-user-plus"></i> Crear Cuenta
+                </button>
+                <button type="button" class="btn btn-secondary btn-block" onclick="window.location.href='../login/login.html'">
+                    <i class="fas fa-arrow-left"></i> Volver al Login
+                </button>
+            </form>
+            
+            <div id="registerMessage" class="form-message"></div>
+        </div>
+    </div>
+
+    <script src="../../Javascript/Api_services.js"></script>
+    <script>
+        // Mostrar mensaje
+        function showMessage(message, type) {
+            const msgDiv = document.getElementById('registerMessage');
+            msgDiv.textContent = message;
+            msgDiv.className = `form-message ${type}`;
+            msgDiv.style.display = 'block';
+            
+            setTimeout(() => {
+                msgDiv.style.display = 'none';
+            }, 5000);
+        }
+        
+        // Validar DPI (13 dígitos)
+        function validarDPI(dpi) {
+            return /^\d{13}$/.test(dpi);
+        }
+        
+        // Validar teléfono (8 dígitos)
+        function validarTelefono(telefono) {
+            return /^\d{8}$/.test(telefono);
+        }
+        
+        // Validar email
+        function validarEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+        
+        // Validar edad (mayor de 0)
+        function calcularEdad(fechaNacimiento) {
+            const hoy = new Date();
+            const nacimiento = new Date(fechaNacimiento);
+            let edad = hoy.getFullYear() - nacimiento.getFullYear();
+            const m = hoy.getMonth() - nacimiento.getMonth();
+            if (m < 0 || (m === 0 && hoy.getDate() < nacimiento.getDate())) {
+                edad--;
+            }
+            return edad;
+        }
+        
+        // Función para crear usuario
+        async function crearUsuario(userData) {
+            const btn = document.getElementById('registerBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<span class="loading-spinner"></span> Creando cuenta...';
+            btn.disabled = true;
+            
+            try {
+                const result = await api.crearUsuario(userData);
+                
+                if (result.success) {
+                    showMessage(`✅ ${result.message}. Redirigiendo al login...`, 'success');
+                    setTimeout(() => {
+                        window.location.href = '../login/login.html';
+                    }, 2000);
+                    return true;
+                } else {
+                    showMessage(`❌ ${result.message}`, 'error');
+                    return false;
+                }
+            } catch (error) {
+                console.error('Error al crear usuario:', error);
+                showMessage('❌ Error de conexión con el servidor. Intenta más tarde.', 'error');
+                return false;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }
+        }
+        
+        // Validar formulario
+        function validarFormulario() {
+            const nombres = document.getElementById('regNombres').value.trim();
+            const apellidos = document.getElementById('regApellidos').value.trim();
+            const dpi = document.getElementById('regDpi').value.trim();
+            const telefono = document.getElementById('regTelefono').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const fechaNacimiento = document.getElementById('regFechaNacimiento').value;
+            const sexo = document.getElementById('regSexo').value;
+            const rol = document.getElementById('regRol').value;
+            const password = document.getElementById('regPassword').value;
+            const confirmPassword = document.getElementById('regConfirmPassword').value;
+            
+            // Validaciones
+            if (!nombres) {
+                showMessage('❌ Ingresa tus nombres', 'error');
+                return false;
+            }
+            
+            if (!apellidos) {
+                showMessage('❌ Ingresa tus apellidos', 'error');
+                return false;
+            }
+            
+            if (!dpi) {
+                showMessage('❌ Ingresa tu número de DPI', 'error');
+                return false;
+            }
+            
+            if (!validarDPI(dpi)) {
+                showMessage('❌ El DPI debe contener exactamente 13 dígitos', 'error');
+                return false;
+            }
+            
+            if (!telefono) {
+                showMessage('❌ Ingresa tu número de teléfono', 'error');
+                return false;
+            }
+            
+            if (!validarTelefono(telefono)) {
+                showMessage('❌ El teléfono debe tener 8 dígitos', 'error');
+                return false;
+            }
+            
+            if (!email) {
+                showMessage('❌ Ingresa tu correo electrónico', 'error');
+                return false;
+            }
+            
+            if (!validarEmail(email)) {
+                showMessage('❌ Ingresa un correo electrónico válido', 'error');
+                return false;
+            }
+            
+            if (!fechaNacimiento) {
+                showMessage('❌ Ingresa tu fecha de nacimiento', 'error');
+                return false;
+            }
+            
+            const edad = calcularEdad(fechaNacimiento);
+            if (edad < 0 || edad > 120) {
+                showMessage('❌ Fecha de nacimiento no válida', 'error');
+                return false;
+            }
+            
+            if (!sexo) {
+                showMessage('❌ Selecciona tu sexo', 'error');
+                return false;
+            }
+            
+            if (!rol) {
+                showMessage('❌ Selecciona el tipo de usuario', 'error');
+                return false;
+            }
+            
+            if (!password) {
+                showMessage('❌ Ingresa una contraseña', 'error');
+                return false;
+            }
+            
+            if (password.length < 6) {
+                showMessage('❌ La contraseña debe tener al menos 6 caracteres', 'error');
+                return false;
+            }
+            
+            if (password !== confirmPassword) {
+                showMessage('❌ Las contraseñas no coinciden', 'error');
+                return false;
+            }
+            
+            return true;
+        }
+        
+        // Evento submit
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            if (!validarFormulario()) {
+                return;
+            }
+            
+            const userData = {
+                nombres: document.getElementById('regNombres').value.trim(),
+                apellidos: document.getElementById('regApellidos').value.trim(),
+                dpi: document.getElementById('regDpi').value.trim(),
+                telefono: document.getElementById('regTelefono').value.trim(),
+                direccion: document.getElementById('regDireccion').value.trim() || null,
+                rol: parseInt(document.getElementById('regRol').value),
+                sexo: document.getElementById('regSexo').value,
+                fecha_nacimiento: document.getElementById('regFechaNacimiento').value,
+                email: document.getElementById('regEmail').value.trim(),
+                antecedetes_medicos: document.getElementById('regAntecedentes').value.trim() || null,
+                password: document.getElementById('regPassword').value,
+                contacto_emergencia: document.getElementById('regContactoEmergencia').value.trim() || null
+            };
+            
+            await crearUsuario(userData);
+        });
+        
+        // Formatear DPI mientras se escribe
+        document.getElementById('regDpi').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 13);
+        });
+        
+        // Formatear teléfono mientras se escribe
+        document.getElementById('regTelefono').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 8);
+        });
+        
+        document.getElementById('regContactoEmergencia').addEventListener('input', function(e) {
+            this.value = this.value.replace(/\D/g, '').slice(0, 8);
+        });
+    </script>
+</body>
+</html>

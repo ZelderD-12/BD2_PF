@@ -1,0 +1,107 @@
+<footer class="footer-simple">
+    <div class="footer-simple-container">
+        <div class="footer-simple-content">
+            <div>
+                <h3><i class="fas fa-heartbeat"></i> FamKon Clinic</h3>
+                <p>Zona 19, Ciudad de Guatemala</p>
+            </div>
+            <div>
+                <h4>Enlaces</h4>
+                <ul>
+                    <li><a href="#inicio" class="footer-simple-link" data-section="inicio">Inicio</a></li>
+                    <li><a href="#servicios" class="footer-simple-link" data-section="servicios">Servicios</a></li>
+                    <li><a href="#contacto" class="footer-simple-link" data-section="contacto">Contacto</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4>Síguenos</h4>
+                <div class="social-simple">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-simple-bottom">
+            <p>&copy; 2023 FamKon Clinic - Zona 19, Guatemala</p>
+        </div>
+    </div>
+</footer>
+
+<style>
+.footer-simple {
+    background: var(--oscuro);
+    color: white;
+    padding: 40px 0 20px;
+    margin-top: 50px;
+}
+.footer-simple-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+.footer-simple-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+.footer-simple-content h3, .footer-simple-content h4 {
+    margin-bottom: 1rem;
+}
+.footer-simple-content ul {
+    list-style: none;
+    padding: 0;
+}
+.footer-simple-content ul li {
+    margin: 0.5rem 0;
+}
+.footer-simple-link, .footer-simple-content a {
+    color: var(--gris-claro);
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.footer-simple-link:hover, .footer-simple-content a:hover {
+    color: var(--verde);
+}
+.social-simple {
+    display: flex;
+    gap: 1rem;
+}
+.social-simple a {
+    font-size: 1.3rem;
+}
+.footer-simple-bottom {
+    text-align: center;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+@media (max-width: 768px) {
+    .footer-simple-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+    .social-simple {
+        justify-content: center;
+    }
+}
+</style>
+
+<script>
+    document.querySelectorAll('.footer-simple-link').forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sectionId = link.getAttribute('data-section');
+            if (sectionId) {
+                document.querySelectorAll('section').forEach(section => {
+                    section.style.display = 'none';
+                });
+                const targetSection = document.getElementById(sectionId);
+                if (targetSection) {
+                    targetSection.style.display = 'block';
+                    targetSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+    });
+</script>
