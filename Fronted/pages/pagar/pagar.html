@@ -1,11 +1,301 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FamKon Clinic | Pago</title>
+    <title>FamKon Clinic | Pagar</title>
+    <link rel="stylesheet" href="pagar.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <h1>hola</h1>
+    <!-- Header -->
+    <header class="header-simple">
+        <div class="header-simple-container">
+            <div class="header-logo">
+                <i class="fas fa-heartbeat"></i>
+                <span>FamKon Clinic</span>
+            </div>
+            <div id="userInfoHeader">
+                <span id="userNameHeader"></span>
+                <button class="btn-logout-header" id="btnLogout" style="display: none;">
+                    <i class="fas fa-sign-out-alt"></i> Cerrar Sesión
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <nav class="navbar-simple">
+        <div class="nav-simple-container">
+            <ul class="nav-simple-menu">
+                <li><a href="/FamKon_Clinic.html" class="nav-simple-link"><i class="fas fa-home"></i> Inicio</a></li>
+                <li><a href="/FamKon_Clinic.html#servicios" class="nav-simple-link"><i class="fas fa-stethoscope"></i> Servicios</a></li>
+                <li><a href="/FamKon_Clinic.html#contacto" class="nav-simple-link"><i class="fas fa-envelope"></i> Contacto</a></li>
+                <li><a href="/pages/pagar/pagar.html" class="nav-simple-link active"><i class="fas fa-credit-card"></i> Pagar</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="pago-page">
+        <div class="pago-container">
+            <div class="pago-card">
+                <div class="pago-header">
+                    <a href="#" class="btn-back" id="btnVolver">
+                        <i class="fas fa-arrow-left"></i> Volver
+                    </a>
+                    <div class="pago-title">
+                        <i class="fas fa-credit-card"></i>
+                        <h1 id="tituloPago">Pago</h1>
+                    </div>
+                    <p id="descripcionPago">Complete los datos para realizar el pago</p>
+                </div>
+
+                <div class="pago-info">
+                    <div class="info-card">
+                        <div class="info-label">TOTAL A PAGAR</div>
+                        <div class="info-monto" id="montoPago">Q0.00</div>
+                    </div>
+                </div>
+
+                <div id="estadoPagoBadge" class="estado-pago-badge" style="display: none;"></div>
+
+                <form id="formPago">
+                    <div class="form-group">
+                        <label><i class="fas fa-user"></i> Nombre del titular</label>
+                        <input type="text" id="nombreTitular" placeholder="Como aparece en la tarjeta" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> Número de tarjeta</label>
+                        <input type="text" id="numeroTarjeta" maxlength="19" placeholder="1234 5678 9012 3456" required>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label><i class="fas fa-calendar"></i> Fecha expiración</label>
+                            <input type="text" id="fechaExpiracion" maxlength="5" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label><i class="fas fa-lock"></i> CVV</label>
+                            <input type="password" id="cvv" maxlength="4" placeholder="123" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-envelope"></i> Correo electrónico</label>
+                        <input type="email" id="email" placeholder="correo@ejemplo.com" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-phone"></i> Teléfono</label>
+                        <input type="tel" id="telefono" maxlength="8" placeholder="12345678" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label><i class="fas fa-credit-card"></i> Método de pago</label>
+                        <select id="metodoPago" required>
+                            <option value="TARJETA_CREDITO">Tarjeta de Crédito</option>
+                            <option value="TARJETA_DEBITO">Tarjeta de Débito</option>
+                            <option value="CUENTA_BANCO">Transferencia Bancaria</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="btn-pagar" id="btnPagar">
+                        <i class="fas fa-lock"></i> Pagar
+                    </button>
+                </form>
+
+                <div id="mensajePago" class="mensaje-pago" style="display: none;"></div>
+                
+                <div id="reintentarContainer" style="display: none;">
+                    <button type="button" class="btn-reintentar" id="btnReintentar">
+                        <i class="fas fa-redo-alt"></i> Reintentar Pago
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer-simple">
+        <div class="footer-simple-container">
+            <div class="footer-simple-content">
+                <div>
+                    <h3>FamKon Clinic</h3>
+                    <p>Tu salud, nuestra prioridad.</p>
+                </div>
+                <div>
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="/FamKon_Clinic.html" class="footer-simple-link">Inicio</a></li>
+                        <li><a href="/FamKon_Clinic.html#servicios" class="footer-simple-link">Servicios</a></li>
+                        <li><a href="/FamKon_Clinic.html#contacto" class="footer-simple-link">Contacto</a></li>
+                        <li><a href="/pages/pagar/pagar.html" class="footer-simple-link">Pagar</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Contacto</h4>
+                    <p><i class="fas fa-phone"></i> +502 1234 5678</p>
+                    <p><i class="fas fa-envelope"></i> info@famkonclinic.com</p>
+                </div>
+                <div>
+                    <h4>Síguenos</h4>
+                    <div class="social-simple">
+                        <a href="#" class="footer-simple-link"><i class="fab fa-facebook"></i></a>
+                        <a href="#" class="footer-simple-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="footer-simple-link"><i class="fab fa-twitter"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-simple-bottom">
+                <p>&copy; 2024 FamKon Clinic. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+        // API_URL global
+        const API_URL = 'http://localhost:8080';
+        
+        // Función para obtener parámetros de URL
+        function getQueryParams() {
+            const params = {};
+            const queryString = window.location.search;
+            console.log('Query String:', queryString);
+            
+            if (queryString) {
+                const urlParams = new URLSearchParams(queryString);
+                for (const [key, value] of urlParams) {
+                    params[key] = decodeURIComponent(value);
+                    console.log(`Parametro: ${key} = ${decodeURIComponent(value)}`);
+                }
+            }
+            return params;
+        }
+        
+        // Cargar datos de la URL al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM cargado - Cargando parámetros...');
+            
+            const params = getQueryParams();
+            
+            // Actualizar título
+            if (params.titulo) {
+                const tituloEl = document.getElementById('tituloPago');
+                if (tituloEl) tituloEl.textContent = params.titulo;
+                console.log('Título actualizado:', params.titulo);
+            }
+            
+            // Actualizar descripción
+            if (params.descripcion) {
+                const descEl = document.getElementById('descripcionPago');
+                if (descEl) descEl.textContent = params.descripcion;
+                console.log('Descripción actualizada:', params.descripcion);
+            }
+            
+            // Actualizar monto
+            if (params.monto) {
+                const montoNum = parseFloat(params.monto);
+                if (!isNaN(montoNum)) {
+                    const montoEl = document.getElementById('montoPago');
+                    if (montoEl) montoEl.textContent = 'Q' + montoNum.toFixed(2);
+                    console.log('Monto actualizado: Q' + montoNum.toFixed(2));
+                }
+            }
+            
+            // Guardar IDs adicionales
+            if (params.servicio_id) {
+                localStorage.setItem('pago_servicio_id', params.servicio_id);
+                console.log('Servicio ID guardado:', params.servicio_id);
+            }
+            if (params.tipo_servicio) {
+                localStorage.setItem('pago_tipo_servicio', params.tipo_servicio);
+                console.log('Tipo servicio guardado:', params.tipo_servicio);
+            }
+            if (params.cita_id) {
+                localStorage.setItem('pago_cita_id', params.cita_id);
+                console.log('Cita ID guardado:', params.cita_id);
+            }
+            
+            // Cargar email guardado
+            const savedEmail = localStorage.getItem('user_email');
+            if (savedEmail) {
+                const emailInput = document.getElementById('email');
+                if (emailInput) emailInput.value = savedEmail;
+                console.log('Email cargado:', savedEmail);
+            }
+            
+            // Configurar botón volver
+            const btnVolver = document.getElementById('btnVolver');
+            if (btnVolver) {
+                btnVolver.href = document.referrer || '/FamKon_Clinic.html';
+            }
+            
+            console.log('✅ Página inicializada correctamente');
+        });
+        
+        // API functions
+        window.api = {
+            async testConexion() {
+                try {
+                    const response = await fetch(`${API_URL}/health`);
+                    const data = await response.json();
+                    console.log('✅ Conexión exitosa:', data);
+                    return { success: true, data };
+                } catch (error) {
+                    console.error('❌ Error de conexión:', error);
+                    return { success: false, error: error.message };
+                }
+            },
+            
+            async pagarConTarjeta(datosPago) {
+                try {
+                    console.log('📤 Enviando pago con tarjeta:', datosPago);
+                    
+                    const response = await fetch(`${API_URL}/pagos/tarjeta`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Idempotency-Key': 'TXN_' + Date.now() + '_' + Math.random().toString(36).substring(7)
+                        },
+                        body: JSON.stringify({
+                            email: datosPago.email,
+                            telefono: datosPago.telefono,
+                            numero_tarjeta: datosPago.numero_tarjeta,
+                            nombre_titular: datosPago.nombre_titular,
+                            fecha_expiracion: datosPago.fecha_expiracion,
+                            cvv: datosPago.cvv,
+                            monto: datosPago.monto,
+                            concepto: datosPago.concepto,
+                            id_servicio: datosPago.id_servicio || 1,
+                            id_cita: datosPago.id_cita || null
+                        })
+                    });
+                    
+                    const result = await response.json();
+                    console.log('📥 Respuesta:', result);
+                    return result;
+                    
+                } catch (error) {
+                    console.error('❌ Error:', error);
+                    return { success: false, error: error.message };
+                }
+            },
+            
+            async obtenerSaldo(email, telefono) {
+                try {
+                    let url = `${API_URL}/pagos/saldo?`;
+                    if (email) url += `email=${encodeURIComponent(email)}`;
+                    if (telefono) url += `telefono=${encodeURIComponent(telefono)}`;
+                    
+                    const response = await fetch(url);
+                    return await response.json();
+                } catch (error) {
+                    return { success: false, error: error.message };
+                }
+            }
+        };
+    </script>
+    <script src="pagar.js"></script>
 </body>
 </html>

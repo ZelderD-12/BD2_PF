@@ -33,7 +33,8 @@ export async function getConnection(): Promise<ConnectionPool> {
         if (pool && pool.connected) {
             console.log(' Usando conexión existente');
             return pool;
-        }   
+        }
+        console.log(' COnerctando a la DB');   
         pool = await sql.connect(dbConfig); 
         return pool;
     } catch (error) {
