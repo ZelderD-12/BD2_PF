@@ -12,6 +12,12 @@ import {
     obtenerDetallePago 
 } from './services/transferencias';
 
+import { 
+    reservarCitaService,
+    obtenerCitasPaciente,
+    obtenerServicios,
+    obtenerMedicos
+} from './services/citas';
 const app = new Elysia();
 
 app.use(cors({
@@ -56,6 +62,11 @@ app.get('/pagos/historial', obtenerHistorial);
 // Obtener detalle de un pago
 app.get('/pagos/detalle/:id', obtenerDetallePago);
 
+
+app.post('/api/reservar/cita',      reservarCitaService);
+app.get('/api/citas/paciente/:id',  obtenerCitasPaciente);
+app.get('/api/citas/servicios',     obtenerServicios);
+app.get('/api/citas/medicos',       obtenerMedicos);
 const port = parseInt(process.env.APP_PORT || '8080');
 app.listen(port);
 
