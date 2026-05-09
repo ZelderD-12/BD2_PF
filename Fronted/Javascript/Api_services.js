@@ -164,6 +164,139 @@ const api = {
         localStorage.removeItem('user_nombre');
         localStorage.removeItem('user_rol');
         window.location.href = '../../FamKon_Clinic.html';
+    },
+
+    // =============================================
+    // RECETAS MÉDICAS
+    // =============================================
+
+    async obtenerCita(idCita) {
+        try {
+            const response = await fetch(`${API_URL}/api/cita/${idCita}`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al obtener cita:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async listarMedicamentos(filtro) {
+        try {
+            const url = filtro
+                ? `${API_URL}/api/medicamentos?filtro=${encodeURIComponent(filtro)}`
+                : `${API_URL}/api/medicamentos`;
+            const response = await fetch(url, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al listar medicamentos:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async insertarMedicamento(nombre) {
+        try {
+            const token = localStorage.getItem('auth_token');
+            const response = await fetch(`${API_URL}/api/medicamentos`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({ nombre })
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al insertar medicamento:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async crearReceta(idCita, idMedicamento, observaciones) {
+        try {
+            const token = localStorage.getItem('auth_token');
+            const response = await fetch(`${API_URL}/api/recetas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    id_cita: idCita,
+                    id_medicamento: idMedicamento,
+                    observaciones: observaciones || null
+                })
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al crear receta:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async agregarLineaReceta(orden, idMedicamento, observaciones) {
+        try {
+            const token = localStorage.getItem('auth_token');
+            const response = await fetch(`${API_URL}/api/recetas/${encodeURIComponent(orden)}/lineas`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify({
+                    id_medicamento: idMedicamento,
+                    observaciones: observaciones || null
+                })
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al agregar línea:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async consultarReceta(orden) {
+        try {
+            const response = await fetch(`${API_URL}/api/recetas/${encodeURIComponent(orden)}`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al consultar receta:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async recetasPorPaciente(idPaciente) {
+        try {
+            const response = await fetch(`${API_URL}/api/pacientes/${idPaciente}/recetas`, {
+                headers: { 'Content-Type': 'application/json' }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al obtener historial:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
+    },
+
+    async anularLineaReceta(idReceta) {
+        try {
+            const token = localStorage.getItem('auth_token');
+            const response = await fetch(`${API_URL}/api/recetas/linea/${idReceta}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error al anular línea:', error);
+            return { success: false, error: 'Error de conexión' };
+        }
     }
 };
 

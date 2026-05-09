@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Catálogo de Medicamentos</title>
+    <link rel="stylesheet" href="../../FamKon_Clinic.css">
+    <link rel="stylesheet" href="medicamentos.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div id="nav"></div>
+
+    <div class="receta-page">
+        <div class="receta-container">
+
+            <div class="receta-header">
+                <a href="../../FamKon_Clinic.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                </a>
+                <h1><i class="fas fa-pills"></i> Catálogo de Medicamentos</h1>
+                <p>Administra los medicamentos disponibles para recetas</p>
+            </div>
+
+            <!-- Barra de acciones -->
+            <div class="card">
+                <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:flex-end;">
+                    <div class="form-group" style="flex:1; min-width:200px; margin:0;">
+                        <label><i class="fas fa-search"></i> Buscar medicamento</label>
+                        <input type="text" id="busqueda" placeholder="Escribe el nombre...">
+                    </div>
+                    <button class="btn-primary" id="btnBuscar">
+                        <i class="fas fa-search"></i> Buscar
+                    </button>
+                    <button class="btn-secondary" id="btnNuevoMed">
+                        <i class="fas fa-plus-circle"></i> Nuevo medicamento
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tabla -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-list"></i> Medicamentos registrados</div>
+                <div id="tablaMeds">
+                    <div class="loading-spinner">
+                        <i class="fas fa-spinner fa-spin"></i> Cargando catálogo...
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- Modal nuevo medicamento -->
+    <div class="modal-overlay" id="modalNuevo">
+        <div class="modal-box">
+            <h3><i class="fas fa-plus-circle" style="color:#00C49A;"></i> Agregar medicamento</h3>
+            <p>El medicamento quedará disponible inmediatamente para las recetas.</p>
+            <div class="form-group">
+                <label><i class="fas fa-pills"></i> Nombre del medicamento</label>
+                <input type="text" id="inputNuevoNombre" placeholder="Ej: Amoxicilina 500mg" maxlength="200">
+            </div>
+            <div id="mensajeModal" class="mensaje"></div>
+            <div class="modal-actions">
+                <button class="btn-outline" onclick="cerrarModalNuevo()">Cancelar</button>
+                <button class="btn-primary" id="btnGuardarMed">
+                    <i class="fas fa-save"></i> Guardar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle"></div>
+        <div id="toastMsg"></div>
+    </div>
+
+    <script src="../../Javascript/Api_services.js"></script>
+    <script src="medicamentos.js"></script>
+</body>
+</html>

@@ -72,6 +72,23 @@ function configurarBotonesGlobales() {
         });
     }
 
+    var navRecetas = document.getElementById('navRecetasSimpleLink');
+    if (navRecetas) {
+        navRecetas.addEventListener('click', function(e) {
+            e.preventDefault();
+            var idPaciente = localStorage.getItem('user_id') || '';
+            window.location.href = './pages/recetas/historial.html?idPaciente=' + idPaciente;
+        });
+    }
+
+    var navCatalogo = document.getElementById('navCatalogoSimpleLink');
+    if (navCatalogo) {
+        navCatalogo.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.location.href = './pages/catalogo/medicamentos.html';
+        });
+    }
+
     var btnRecepcion = document.getElementById('btnRecepcion');
     if (btnRecepcion) {
         btnRecepcion.addEventListener('click', function(e) {
@@ -98,8 +115,12 @@ function verificarSesionGlobal() {
     var userNameSpan = document.getElementById('userNameHeader');
     var navPagarItem     = document.getElementById('navPagarSimple');
     var navRecepcionItem = document.getElementById('navRecepcionSimple');
+    var navRecetasItem   = document.getElementById('navRecetasSimple');
+    var navCatalogoItem  = document.getElementById('navCatalogoSimple');
     var logoutBtn = document.getElementById('logoutBtn');
     var rol = localStorage.getItem('user_rol') || '';
+
+    var esPersonalClinica = (rol === 'Medico' || rol === 'Resepcionista' || rol === 'Admin');
 
     if (token && userName) {
         if (btnLogin) btnLogin.style.display = 'none';
@@ -108,11 +129,15 @@ function verificarSesionGlobal() {
         if (navPagarItem) navPagarItem.style.display = 'list-item';
         if (logoutBtn) logoutBtn.style.display = 'block';
         if (navRecepcionItem) navRecepcionItem.style.display = rol === 'Resepcionista' ? 'list-item' : 'none';
+        if (navRecetasItem)   navRecetasItem.style.display   = esPersonalClinica ? 'list-item' : 'none';
+        if (navCatalogoItem)  navCatalogoItem.style.display  = esPersonalClinica ? 'list-item' : 'none';
     } else {
         if (btnLogin) btnLogin.style.display = 'block';
         if (userInfo) userInfo.style.display = 'none';
-        if (navPagarItem) navPagarItem.style.display = 'none';
+        if (navPagarItem)     navPagarItem.style.display     = 'none';
         if (navRecepcionItem) navRecepcionItem.style.display = 'none';
+        if (navRecetasItem)   navRecetasItem.style.display   = 'none';
+        if (navCatalogoItem)  navCatalogoItem.style.display  = 'none';
         if (logoutBtn) logoutBtn.style.display = 'none';
     }
 }

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Detalle de Receta</title>
+    <link rel="stylesheet" href="../../FamKon_Clinic.css">
+    <link rel="stylesheet" href="recetas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div id="nav"></div>
+
+    <div class="receta-page">
+        <div class="receta-container">
+
+            <div class="receta-header no-print">
+                <a href="../../FamKon_Clinic.html" class="btn-back">
+                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                </a>
+                <h1><i class="fas fa-file-prescription"></i> Detalle de Receta</h1>
+                <p>Vista completa e imprimible</p>
+            </div>
+
+            <!-- Encabezado estilo receta médica (visible en print) -->
+            <div class="print-header" id="printHeader" style="display:none;">
+                <div style="text-align:center; border-bottom: 2px solid #0077B6; padding-bottom:16px; margin-bottom:16px;">
+                    <h2 style="color:#0077B6; font-size:1.6rem;"><i class="fas fa-heartbeat"></i> FamKon Clinic</h2>
+                    <p style="color:#6C757D; font-size:0.85rem;">Zona 19, Ciudad de Guatemala &nbsp;|&nbsp; (502) 1234-5678 &nbsp;|&nbsp; info@famkonclinic.com</p>
+                </div>
+            </div>
+
+            <div id="contenidoReceta">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando receta...
+                </div>
+            </div>
+
+            <div class="form-actions no-print" id="botonesAccion" style="display:none;">
+                <button type="button" class="btn-secondary btn-imprimir" onclick="window.print()">
+                    <i class="fas fa-print"></i> Imprimir
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- Modal confirmar anular -->
+    <div class="modal-overlay" id="modalAnular">
+        <div class="modal-box">
+            <h3><i class="fas fa-exclamation-triangle" style="color:#dc3545;"></i> Anular medicamento</h3>
+            <p id="modalAnularMsg">¿Está seguro que desea anular esta línea de la receta? Esta acción no se puede deshacer.</p>
+            <div class="modal-actions">
+                <button class="btn-outline" onclick="cerrarModal()">Cancelar</button>
+                <button class="btn-danger" id="btnConfirmarAnular">Anular</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle"></div>
+        <div id="toastMsg"></div>
+    </div>
+
+    <script src="../../Javascript/Api_services.js"></script>
+    <script src="detalle.js"></script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Emitir Receta</title>
+    <link rel="stylesheet" href="../../FamKon_Clinic.css">
+    <link rel="stylesheet" href="recetas.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="header"></div>
+    <div id="nav"></div>
+
+    <div class="receta-page">
+        <div class="receta-container">
+
+            <div class="receta-header">
+                <a href="../../FamKon_Clinic.html" class="btn-back no-print">
+                    <i class="fas fa-arrow-left"></i> Volver al inicio
+                </a>
+                <h1><i class="fas fa-prescription-bottle-alt"></i> Emitir Receta Médica</h1>
+                <p>Complete los medicamentos e indicaciones para la cita</p>
+            </div>
+
+            <!-- Datos de la cita (read-only) -->
+            <div class="card" id="cardCita">
+                <div class="loading-spinner">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando datos de la cita...
+                </div>
+            </div>
+
+            <!-- Líneas de medicamentos -->
+            <div class="card">
+                <div class="card-title"><i class="fas fa-pills"></i> Medicamentos</div>
+
+                <div id="lineasLista" class="lineas-lista"></div>
+
+                <button type="button" class="btn-agregar-linea no-print" id="btnAgregarLinea">
+                    <i class="fas fa-plus-circle"></i> Agregar medicamento
+                </button>
+            </div>
+
+            <div id="mensajeGlobal" class="mensaje"></div>
+
+            <div class="form-actions no-print">
+                <button type="button" class="btn-primary" id="btnGuardar">
+                    <i class="fas fa-save"></i> Guardar Receta
+                </button>
+                <button type="button" class="btn-outline" id="btnLimpiarBorrador">
+                    <i class="fas fa-trash-alt"></i> Limpiar borrador
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer"></div>
+
+    <!-- Toast -->
+    <div class="toast" id="toast">
+        <div class="toast-title" id="toastTitle"></div>
+        <div id="toastMsg"></div>
+    </div>
+
+    <script src="../../Javascript/Api_services.js"></script>
+    <script src="nueva.js"></script>
+</body>
+</html>
