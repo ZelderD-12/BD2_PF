@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FamKon Clinic | Sala de Espera</title>
+    <link rel="stylesheet" href="pantalla_publica.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header clinica -->
+    <div class="pantalla-header">
+        <div class="header-logo">
+            <i class="fas fa-heartbeat"></i>
+            <span>FamKon Clinic</span>
+        </div>
+        <div class="header-info">
+            <span id="horaActual" class="hora-actual"></span>
+            <span class="sede-label"><i class="fas fa-map-marker-alt"></i> Sede Zona 19</span>
+        </div>
+    </div>
+
+    <div class="pantalla-body">
+
+        <!-- Ticket llamado actualmente -->
+        <div class="seccion-llamado">
+            <div class="llamado-label">
+                <i class="fas fa-bullhorn"></i> TURNO EN ATENCION
+            </div>
+            <div id="ticketLlamado" class="ticket-llamado-vacio">
+                <div class="sin-ticket">
+                    <i class="fas fa-hourglass-half"></i>
+                    <p>Esperando llamado...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proximos en cola -->
+        <div class="seccion-proximos">
+            <div class="proximos-label">
+                <i class="fas fa-list-ol"></i> PROXIMOS
+            </div>
+            <div id="listaProximos" class="proximos-lista">
+                <div class="proximos-vacio">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Sin pacientes en espera</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Footer con mensaje rotativo -->
+    <div class="pantalla-footer">
+        <marquee class="footer-mensaje">
+            Bienvenido a FamKon Clinic &nbsp;&nbsp;|&nbsp;&nbsp;
+            Por favor este atento a su numero de turno &nbsp;&nbsp;|&nbsp;&nbsp;
+            Gracias por su paciencia &nbsp;&nbsp;|&nbsp;&nbsp;
+            Respete el orden de llegada
+        </marquee>
+    </div>
+
+    <script src="pantalla_publica.js"></script>
+</body>
+</html>

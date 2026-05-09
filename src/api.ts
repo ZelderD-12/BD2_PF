@@ -12,12 +12,20 @@ import {
     obtenerDetallePago 
 } from './services/transferencias';
 
-import { 
+import {
     reservarCitaService,
     obtenerCitasPaciente,
     obtenerServicios,
     obtenerMedicos
 } from './services/citas';
+
+import {
+    generarTicketService,
+    llamarSiguienteService,
+    cambiarEstadoTicketService,
+    obtenerColaPublicaService
+} from './services/tickets';
+
 const app = new Elysia();
 
 app.use(cors({
@@ -67,6 +75,13 @@ app.post('/api/reservar/cita',      reservarCitaService);
 app.get('/api/citas/paciente/:id',  obtenerCitasPaciente);
 app.get('/api/citas/servicios',     obtenerServicios);
 app.get('/api/citas/medicos',       obtenerMedicos);
+
+// Tickets y cola de recepcion
+app.post('/api/tickets/generar',         generarTicketService);
+app.post('/api/tickets/siguiente',       llamarSiguienteService);
+app.post('/api/tickets/:id/estado',      cambiarEstadoTicketService);
+app.get('/api/pantalla/cola',            obtenerColaPublicaService);
+
 const port = parseInt(process.env.APP_PORT || '8080');
 app.listen(port);
 
