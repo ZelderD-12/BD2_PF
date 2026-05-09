@@ -34,9 +34,9 @@ interface ActualizarUsuarioBody {
 }
 
 const getClientIp = (request: Request): string => {
-    return request.headers.get('x-forwarded-for') || 
-           request.headers.get('x-real-ip') || 
-           request.headers.get('host')?.split(':')[0] || 
+    return request.headers.get('x-forwarded-for') ||
+           request.headers.get('x-real-ip') ||
+           request.headers.get('host')?.split(':')[0] ||
            '0.0.0.0';
 };
 
@@ -52,23 +52,23 @@ export const login = async ({ body, set, request }: Context) => {
 
     try {
         const pool = await getConnection();
-        
+
+        // Usar el Stored Procedure
         const result = await pool.request()
             .input('email', sql.VarChar(100), email)
             .input('password', sql.VarChar(125), password)
             .input('ip_origen', sql.VarChar(50), ip_origen)
             .input('user_agent', sql.VarChar(200), user_agent)
+            .output('session_id', sql.VarChar(100))
             .execute('sp_login_usuario');
 
-        const data = result.recordset[0];
+        const data = result.recordset?.[0];
 
-        if (data.Resultado === 1) {
-            const token = Buffer.from(`${data.id_usuario}:${Date.now()}`).toString('base64');
-            
+        if (data?.Resultado === 1) {
             return {
                 success: true,
                 message: data.Mensaje,
-                token: token,
+                token: data.token,
                 usuario: {
                     id: data.id_usuario,
                     nombres: data.nombres,
@@ -78,10 +78,25 @@ export const login = async ({ body, set, request }: Context) => {
                     rol_nombre: data.rol_nombre
                 }
             };
-        } else {
-            set.status = 401;
-            return { success: false, message: data.Mensaje };
         }
+
+        // Manejar diferentes códigos de error
+        let statusCode = 401;
+        let errorMessage = data?.Mensaje || 'Credenciales incorrectas';
+        
+        if (data?.Codigo === 'CUENTA_BLOQUEADA') {
+            statusCode = 423; // Locked
+        } else if (data?.Codigo === 'DEMASIADOS_INTENTOS') {
+            statusCode = 429; // Too Many Requests
+        }
+
+        set.status = statusCode;
+        return { 
+            success: false, 
+            message: errorMessage,
+            code: data?.Codigo 
+        };
+
     } catch (error) {
         console.error('Error en login:', error);
         set.status = 500;
@@ -94,7 +109,7 @@ export const crearUsuario = async ({ body, set, request }: Context) => {
         nombres, apellidos, dpi, telefono, direccion, rol, sexo,
         fecha_nacimiento, email, antecedetes_medicos, password, contacto_emergencia
     } = body as CrearUsuarioBody;
-    
+
     const ip_origen = getClientIp(request);
     const usuario_ejecutor = email || 'sistema';
 
@@ -105,7 +120,7 @@ export const crearUsuario = async ({ body, set, request }: Context) => {
 
     try {
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .input('nombres', sql.VarChar(120), nombres)
             .input('apellidos', sql.VarChar(120), apellidos)
@@ -124,9 +139,9 @@ export const crearUsuario = async ({ body, set, request }: Context) => {
             .output('id_usuario', sql.Int)
             .execute('sp_crear_usuario');
 
-        const data = result.recordset[0];
+        const data = result.recordset?.[0];
 
-        if (data.Resultado === 1) {
+        if (data?.Resultado === 1) {
             return {
                 success: true,
                 message: data.Mensaje,
@@ -136,10 +151,11 @@ export const crearUsuario = async ({ body, set, request }: Context) => {
                     rol: data.Nombre_Rol
                 }
             };
-        } else {
-            set.status = 400;
-            return { success: false, message: data.Mensaje };
         }
+
+        set.status = 400;
+        return { success: false, message: data?.Mensaje || 'Error al crear usuario' };
+
     } catch (error) {
         console.error('Error al crear usuario:', error);
         set.status = 500;
@@ -152,7 +168,7 @@ export const actualizarUsuario = async ({ body, set, request }: Context) => {
         id_usuario, nombres, apellidos, telefono, direccion,
         email, antecedetes_medicos, contacto_emergencia
     } = body as ActualizarUsuarioBody;
-    
+
     const ip_origen = getClientIp(request);
     const usuario_ejecutor = email || 'sistema';
 
@@ -163,7 +179,7 @@ export const actualizarUsuario = async ({ body, set, request }: Context) => {
 
     try {
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .input('id_usuario', sql.Int, id_usuario)
             .input('nombres', sql.VarChar(120), nombres)
@@ -177,14 +193,15 @@ export const actualizarUsuario = async ({ body, set, request }: Context) => {
             .input('ip_origen', sql.VarChar(50), ip_origen)
             .execute('sp_actualizar_usuario');
 
-        const data = result.recordset[0];
+        const data = result.recordset?.[0];
 
-        if (data.Resultado === 1) {
+        if (data?.Resultado === 1) {
             return { success: true, message: data.Mensaje };
-        } else {
-            set.status = 400;
-            return { success: false, message: data.Mensaje };
         }
+
+        set.status = 400;
+        return { success: false, message: data?.Mensaje || 'Error al actualizar usuario' };
+
     } catch (error) {
         console.error('Error al actualizar usuario:', error);
         set.status = 500;
@@ -202,33 +219,32 @@ export const obtenerUsuario = async ({ params, set }: Context) => {
 
     try {
         const pool = await getConnection();
-        
+
         const result = await pool.request()
             .input('id_usuario', sql.Int, parseInt(id))
             .query(`
-                SELECT 
+                SELECT
                     u.id_usuario, u.nombres, u.apellidos, u.dpi, u.telefono,
-                    u.direccion, u.rol, u.sexo, u.fecha_nacimiento, u.email, 
+                    u.direccion, u.rol, u.sexo, u.fecha_nacimiento, u.email,
                     u.antecedetes_medicos, u.contacto_emergencia, r.rol as rol_nombre
-                FROM dbo.ususarios u
-                LEFT JOIN dbo.roles r ON u.rol = r.id_rol
+                FROM dbo.Usuario u
+                LEFT JOIN dbo.Rol r ON u.rol = r.id_rol
                 WHERE u.id_usuario = @id_usuario
-            `);
-
-        if (result.recordset.length === 0) {
-            set.status = 404;
+            `);                                                                                                                                                                                             
+   
+        if (result.recordset.length === 0) {                                                                                                                                                                
+            set.status = 404;                                                                                                                                                                             
             return { success: false, message: 'Usuario no encontrado' };
         }
-
+                                                                                                                                                                                                              
         const usuario = result.recordset[0];
-        
-        const edad = new Date().getFullYear() - new Date(usuario.fecha_nacimiento).getFullYear();
-        usuario.edad = edad;
+        usuario.edad = new Date().getFullYear() - new Date(usuario.fecha_nacimiento).getFullYear();                                                                                                         
+                                                                                                                                                                                                            
+        return { success: true, data: usuario };                                                                                                                                                          
 
-        return { success: true, data: usuario };
-    } catch (error) {
+    } catch (error) {                                                                                                                                                                                       
         console.error('Error al obtener usuario:', error);
-        set.status = 500;
-        return { success: false, message: 'Error interno del servidor' };
-    }
+        set.status = 500;                                                                                                                                                                                   
+        return { success: false, message: 'Error interno del servidor' };                                                                                                                                 
+    }                                                                                                                                                                                                     
 };

@@ -1,3 +1,4 @@
+// api.ts
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -28,11 +29,24 @@ import {
 
 const app = new Elysia();
 
+// Configuración CORS corregida
 app.use(cors({
-    origin: '*',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key']
+    origin: true, // Permite cualquier origen
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'Idempotency-Key', 'X-Requested-With'],
+    exposeHeaders: ['Content-Length', 'X-Request-Id'], // 👈 CORREGIDO: exposeHeaders (sin 'd')
+    credentials: true,
+    maxAge: 86400 // 24 horas
 }));
+
+// Manejo explícito de OPTIONS para preflight
+app.options('*', ({ set }) => {
+    set.headers['Access-Control-Allow-Origin'] = '*';
+    set.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS';
+    set.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization, Idempotency-Key';
+    set.status = 204;
+    return null;
+});
 
 // Health check
 app.get('/', () => ({
@@ -69,7 +83,6 @@ app.get('/pagos/historial', obtenerHistorial);
 
 // Obtener detalle de un pago
 app.get('/pagos/detalle/:id', obtenerDetallePago);
-
 
 app.post('/api/reservar/cita',      reservarCitaService);
 app.get('/api/citas/paciente/:id',  obtenerCitasPaciente);
